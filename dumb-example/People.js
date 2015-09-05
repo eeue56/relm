@@ -25,13 +25,14 @@ var AddPerson = React.createClass({
     submitName: function(){
         this.props.newPerson.send(this.state.name);
         this.state.name = '';
+        return false;
     },
     handleChange: function(event) {
         this.setState( { name: event.target.value } );
     },
     render: function() {
         return (
-            <form action='#' onSubmit={this.submitName} >
+            <form onSubmit={this.submitName} >
                 <input type="text" 
                     value={this.state.name} 
                     onChange={this.handleChange} />
@@ -49,8 +50,6 @@ var PeopleDisplay = React.createClass({
 
     },
     componentDidMount: function() {
-        // console.log(this.state);
-        // this.state.elmApp.ports.newPerson.send("Dave");
         this.state.elmApp.ports.people.subscribe(function(people){
             this.setState({ people: people });
         }.bind(this));
