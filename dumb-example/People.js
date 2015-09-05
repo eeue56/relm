@@ -22,10 +22,10 @@ var AddPerson = React.createClass({
     getInitialState: function() {
         return { name: '' };
     },
-    submitName: function(){
+    submitName: function(event){
+        event.preventDefault();
         this.props.newPerson.send(this.state.name);
         this.state.name = '';
-        return false;
     },
     handleChange: function(event) {
         this.setState( { name: event.target.value } );
