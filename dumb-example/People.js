@@ -69,6 +69,9 @@ var PeopleDisplay = React.createClass({
         this.state.elmApp.ports.names.subscribe(function(names){
             this.setState({ people: names });
         }.bind(this));
+        this.state.elmApp.ports.peopleObject.subscribe(function(names){
+            console.log(names);
+        }.bind(this));
     },
     render: function(){
         return (

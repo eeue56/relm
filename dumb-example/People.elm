@@ -3,6 +3,7 @@ module People where
 import Dict exposing (Dict)
 import Set exposing (Set, toList, fromList)
 import Time exposing (every, second, Time)
+import Json.Encode
 
 port newPerson : Signal String
 port isUnique : Signal Bool
@@ -36,3 +37,14 @@ port names =
   in
     Signal.map2 (names') (isUnique) (people)
 
+
+encodePerson : (Time, String) -> Json.Encode.Value
+encodePerson (id, person) =
+  Json.Encode.object 
+    [ ("id", Json.Encode.float id), ("name", Json.Encode.string person) ]
+
+port peopleObject : Signal (Json.Encode.Value)
+port peopleObject =
+  Signal.map 
+    (Dict.toList >> (List.map encodePerson) >> Json.Encode.list) 
+    people
