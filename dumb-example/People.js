@@ -47,9 +47,11 @@ var UniqueNamesCheckbox = React.createClass({
     },
     render: function() {
         return (
-            <input type="checkbox" 
-                value="Unique only?"
-                onChange={this.handleChange} />
+            <div>
+                <label>Only show unique names?</label>
+                <input type="checkbox" 
+                    onChange={this.handleChange}/>
+            </div>
         );
     }
 });
@@ -59,7 +61,6 @@ var PeopleDisplay = React.createClass({
     getInitialState: function() {
         return {
             people: [],
-            isUnique : false,
             elmApp : Elm.worker(Elm.People, { newPerson: "", isUnique: false })
         };
 

@@ -15,8 +15,11 @@ names = Signal.foldp updatePeople [] currentPeople
 port people : Signal (List String)
 port people = 
     let 
-        people' isUnique = if isUnique then names else Signal.map (Set.toList << Set.fromList) names
+        people' : Bool ->  List String -> List String
+        people' isUnique names = 
+            if isUnique then 
+                (Set.toList << Set.fromList) names 
+            else names
     in
-        Signal.map people' isUnique
-    
+        Signal.map2 (people') (isUnique) (names)
 
