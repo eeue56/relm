@@ -41,11 +41,26 @@ var AddPerson = React.createClass({
     }
 });
 
+var UniqueNamesCheckbox = React.createClass({
+    handleChange: function(event) {
+        this.props.unique.send(event.target.checked);
+    },
+    render: function() {
+        return (
+            <input type="checkbox" 
+                value="Unique only?"
+                onChange={this.handleChange} />
+        );
+    }
+});
+
+
 var PeopleDisplay = React.createClass({
     getInitialState: function() {
         return {
             people: [],
-            elmApp : Elm.worker(Elm.People, { newPerson: "" })
+            isUnique : false,
+            elmApp : Elm.worker(Elm.People, { newPerson: "", isUnique: false })
         };
 
     },
@@ -57,6 +72,7 @@ var PeopleDisplay = React.createClass({
     render: function(){
         return (
             <div>
+                <UniqueNamesCheckbox unique={this.state.elmApp.ports.isUnique}/>
                 <NameList users={this.state.people} />
                 <AddPerson newPerson={this.state.elmApp.ports.newPerson} />
             </div>
