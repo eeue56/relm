@@ -14,6 +14,11 @@ addPerson : (String, Time) -> Dict Time String -> Dict Time String
 addPerson (newName, time) people =
   Dict.insert time newName people
 
+encodePerson : (Time, String) -> Json.Encode.Value
+encodePerson (id, person) =
+  Json.Encode.object 
+    [ ("id", Json.Encode.float id), ("name", Json.Encode.string person) ]
+
 people' : Dict Time String
 people' = Dict.empty 
 
@@ -36,12 +41,6 @@ port names =
             values
   in
     Signal.map2 (names') (isUnique) (people)
-
-
-encodePerson : (Time, String) -> Json.Encode.Value
-encodePerson (id, person) =
-  Json.Encode.object 
-    [ ("id", Json.Encode.float id), ("name", Json.Encode.string person) ]
 
 port peopleObject : Signal (Json.Encode.Value)
 port peopleObject =

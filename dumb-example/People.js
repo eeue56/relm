@@ -1,16 +1,16 @@
-var Name = React.createClass({
+var Person = React.createClass({
     render: function() {
         return <div>Name: {this.props.name} </div>;
     }
 });
 
-var NameList = React.createClass({
+var PeopleList = React.createClass({
     render: function() {
         return (
             <ul>
-            {this.props.users.map(function(name) {
-                return (<li>
-                    <Name key={name} name={name}/>
+            {this.props.users.map(function(user) {
+                return (<li key={user.id}>
+                    <Person name={user.name}/>
                 </li>);
             })}
             </ul>
@@ -66,18 +66,15 @@ var PeopleDisplay = React.createClass({
 
     },
     componentDidMount: function() {
-        this.state.elmApp.ports.names.subscribe(function(names){
-            this.setState({ people: names });
-        }.bind(this));
-        this.state.elmApp.ports.peopleObject.subscribe(function(names){
-            console.log(names);
+        this.state.elmApp.ports.peopleObject.subscribe(function(people){
+            this.setState({ people: people });
         }.bind(this));
     },
     render: function(){
         return (
             <div>
                 <UniqueNamesCheckbox unique={this.state.elmApp.ports.isUnique}/>
-                <NameList users={this.state.people} />
+                <PeopleList users={this.state.people} />
                 <AddPerson newPerson={this.state.elmApp.ports.newPerson} />
             </div>
         );
