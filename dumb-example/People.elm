@@ -27,23 +27,33 @@ people =
     <| 
       Signal.map2 (\x y -> (x, y)) (newPerson) (Signal.sampleOn newPerson personId)
 
-port names : Signal (List String)
-port names = 
-  let 
-    names' : Bool ->  Dict Time String -> List String
-    names' isUnique people = 
-      let 
-        values = Dict.values people
-      in
-        if isUnique then 
-          (Set.toList << Set.fromList) values 
-        else 
-            values
-  in
-    Signal.map2 (names') (isUnique) (people)
+names' : Dict Time String -> List String
+names' people = 
+  Dict.values people
 
+count : a -> List a -> Int
+count x xs =  
+  List.length 
+    <| List.filter (\y -> y == x) xs
+    
 port peopleObject : Signal (Json.Encode.Value)
 port peopleObject =
-  Signal.map 
-    (Dict.toList >> (List.map encodePerson) >> Json.Encode.list) 
-    people
+  let 
+
+    filtering : Dict Time String -> Bool -> List (Time, String) -> List (Time, String)
+    filtering peopleDict isUnique people = 
+      let
+        names = names' peopleDict
+      in
+        if isUnique then 
+          List.filter (\(id, name) -> count name names == 1) people
+        else
+          people
+
+    converter people isUnique =
+      Dict.toList people
+        |> filtering people isUnique
+        |> List.map encodePerson
+        |> Json.Encode.list
+  in
+  Signal.map2 (converter) people isUnique

@@ -1,6 +1,6 @@
 var Person = React.createClass({
     render: function() {
-        return <div>Name: {this.props.name} </div>;
+        return <div>Name: {this.props.user.name} </div>;
     }
 });
 
@@ -10,7 +10,7 @@ var PeopleList = React.createClass({
             <ul>
             {this.props.users.map(function(user) {
                 return (<li key={user.id}>
-                    <Person name={user.name}/>
+                    <Person user={user}/>
                 </li>);
             })}
             </ul>
