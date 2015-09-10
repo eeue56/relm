@@ -11,4 +11,5 @@ myPage = ["<h1>Hello</h1>",
 
 root = HtmlRender.renderRoot <| String.concat myPage
 
+-- show is ignored here while Elm is in fullscreen
 main = show <| "boot"
