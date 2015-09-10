@@ -1,10 +1,25 @@
 module HtmlRender where
 {-|
 
-@docs renderRoot
+@docs Element, createRoot, render, renderRoot
 -}
 import Native.HtmlRender
 
 {-| -}
-renderRoot : String -> String
-renderRoot = Native.HtmlRender.renderRoot
+type alias Element =
+    { html : String,
+      rendered : Bool,
+      root : String
+}
+
+{-| -}
+createRoot : String -> Element
+createRoot = Native.HtmlRender.createRoot
+
+{-| -}
+render : Element -> Element
+render = Native.HtmlRender.render
+
+{-| -}
+renderRoot : String -> Element
+renderRoot = createRoot >> render

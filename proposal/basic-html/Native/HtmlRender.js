@@ -11,13 +11,39 @@ Elm.Native.HtmlRender.make = function(localRuntime) {
         ? document.body
         : localRuntime.node;
 
-    var renderRoot = function(html){
-        node.innerHTML = html;
+    var newElement = function(html, root){
+        if (root === null){
+            root = node;
+        }
 
-        return html;
+        return {
+            html: html,
+            root: root,
+            rendered: false
+        };
+    };
+
+
+    var createRoot = function(html){
+        var node = newElement(html, null);
+
+        return node;
+    };
+
+    var createNode = function(html, parent){
+        var node = newElement(html, parent);
+        return node;
+    }
+
+    var render = function(node){
+        node.root.innerHTML = node.html;
+        node.rendered = true;
+
+        return node;
     };
 
     return Elm.Native.HtmlRender.values = {
-        renderRoot: renderRoot
+        createRoot: createRoot,
+        render: render
     };
 };

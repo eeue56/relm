@@ -11,4 +11,4 @@ myPage = ["<h1>Hello</h1>",
 
 root = HtmlRender.renderRoot <| String.concat myPage
 
-main = show root
+main = show <| "boot"
